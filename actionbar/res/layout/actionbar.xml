@@ -44,7 +44,6 @@
             android:orientation="horizontal"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="@color/actionbar_separator"
             android:visibility="gone"
             >
             <!-- TODO: Make configurable. -->
@@ -73,15 +72,13 @@
             android:layout_centerVertical="true"
             android:layout_margin="0dp"
             android:padding="0dp"
-            android:background="@color/actionbar_separator"
             />
         
         <RelativeLayout
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/actionbar_home_bg"
-            android:layout_toLeftOf="@id/actionbar_actions"
-            android:layout_alignWithParentIfMissing="true"
+			android:layout_centerHorizontal="true"
+            android:layout_alignWithParentIfMissing="true"      
             android:layout_centerVertical="true"
             >
             <ProgressBar
@@ -110,7 +107,20 @@
                 android:scrollHorizontally="true"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
+                android:visibility="gone"
+                
                 />
+        	<ImageView
+            	android:id="@+id/actionbar_title_logo"
+            	android:layout_width="wrap_content"
+            	android:layout_height="@dimen/actionbar_height"
+            	android:layout_alignParentLeft="true"
+            	android:background="@drawable/actionbar_btn"
+            	android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+            	style="@style/ActionBarHomeLogo"
+            	android:visibility="gone"
+            />                
         </RelativeLayout> 
     </RelativeLayout>
 </RelativeLayout>

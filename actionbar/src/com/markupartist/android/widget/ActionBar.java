@@ -38,265 +38,324 @@ import android.widget.Toast;
 
 public class ActionBar extends RelativeLayout implements OnClickListener {
 
-    private LayoutInflater mInflater;
-    private RelativeLayout mBarView;
-    private ImageView mLogoView;
-    private View mBackIndicator;
-    //private View mHomeView;
-    private TextView mTitleView;
-    private LinearLayout mActionsView;
-    private ImageButton mHomeBtn;
-    private RelativeLayout mHomeLayout;
-    private ProgressBar mProgress;
+	private LayoutInflater mInflater;
+	private RelativeLayout mBarView;
+	private ImageView mLogoView;
+	private View mBackIndicator;
+	private TextView mTitleView;
+	private ImageView mTitleLogo;
+	private LinearLayout mActionsView;
+	private ImageButton mHomeBtn;
+	private RelativeLayout mHomeLayout;
+	private ProgressBar mProgress;
 
-    public ActionBar(Context context, AttributeSet attrs) {
-        super(context, attrs);
+	public ActionBar(Context context, AttributeSet attrs) {
+		super(context, attrs);
 
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		mInflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        mBarView = (RelativeLayout) mInflater.inflate(R.layout.actionbar, null);
-        addView(mBarView);
+		mBarView = (RelativeLayout) mInflater.inflate(R.layout.actionbar, null);
+		addView(mBarView);
 
-        mLogoView = (ImageView) mBarView.findViewById(R.id.actionbar_home_logo);
-        mHomeLayout = (RelativeLayout) mBarView.findViewById(R.id.actionbar_home_bg);
-        mHomeBtn = (ImageButton) mBarView.findViewById(R.id.actionbar_home_btn);
-        mBackIndicator = mBarView.findViewById(R.id.actionbar_home_is_back);
+		mTitleLogo = (ImageView) mBarView
+				.findViewById(R.id.actionbar_title_logo);
+		mLogoView = (ImageView) mBarView.findViewById(R.id.actionbar_home_logo);
+		mHomeLayout = (RelativeLayout) mBarView
+				.findViewById(R.id.actionbar_home_bg);
+		mHomeBtn = (ImageButton) mBarView.findViewById(R.id.actionbar_home_btn);
+		mBackIndicator = mBarView.findViewById(R.id.actionbar_home_is_back);
 
-        mTitleView = (TextView) mBarView.findViewById(R.id.actionbar_title);
-        mActionsView = (LinearLayout) mBarView.findViewById(R.id.actionbar_actions);
-        
-        mProgress = (ProgressBar) mBarView.findViewById(R.id.actionbar_progress);
+		mTitleView = (TextView) mBarView.findViewById(R.id.actionbar_title);
+		mActionsView = (LinearLayout) mBarView
+				.findViewById(R.id.actionbar_actions);
 
-        TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.ActionBar);
-        CharSequence title = a.getString(R.styleable.ActionBar_title);
-        if (title != null) {
-            setTitle(title);
-        }
-        a.recycle();
-    }
+		mProgress = (ProgressBar) mBarView
+				.findViewById(R.id.actionbar_progress);
 
-    public void setHomeAction(Action action) {
-        mHomeBtn.setOnClickListener(this);
-        mHomeBtn.setTag(action);
-        mHomeBtn.setImageResource(action.getDrawable());
-        mHomeLayout.setVisibility(View.VISIBLE);
-    }
+		TypedArray a = context.obtainStyledAttributes(attrs,
+				R.styleable.ActionBar);
+		CharSequence title = a.getString(R.styleable.ActionBar_title);
+		if (title != null) {
+			setTitle(title);
+		}
+		a.recycle();
+	}
 
-    public void clearHomeAction() {
-        mHomeLayout.setVisibility(View.GONE);
-    }
+	public void setHomeAction(Action action) {
+		mHomeBtn.setOnClickListener(this);
+		mHomeBtn.setTag(action);
+		mHomeBtn.setImageResource(action.getDrawable());
+		mHomeLayout.setVisibility(View.VISIBLE);
+	}
+	
+	/**
+	 * Sets the color of the left seperator.
+	 * @param resId The color id of the seperator.
+	 */
+	public void setLeftSeperator(int resId){
+		mHomeLayout.setBackgroundColor(getResources().getColor(resId));
+		
+	}
+	
+	/**
+	 * Sets the color of the Right seperator.
+	 * @param resId The color id of the seperator.
+	 */
+	public void setRightSeperator(int resId){
+		
+		mActionsView.setBackgroundColor(getResources().getColor(resId));
+		
+	}
 
-    /**
-     * Shows the provided logo to the left in the action bar.
-     * 
-     * This is ment to be used instead of the setHomeAction and does not draw
-     * a divider to the left of the provided logo.
-     * 
-     * @param resId The drawable resource id
-     */
-    public void setHomeLogo(int resId) {
-        // TODO: Add possibility to add an IntentAction as well.
-        mLogoView.setImageResource(resId);
-        mLogoView.setVisibility(View.VISIBLE);
-        mHomeLayout.setVisibility(View.GONE);
-    }
+	public void clearHomeAction() {
+		mHomeLayout.setVisibility(View.GONE);
+	}
 
-    /* Emulating Honeycomb, setdisplayHomeAsUpEnabled takes a boolean
-     * and toggles whether the "home" view should have a little triangle
-     * indicating "up" */
-    public void setDisplayHomeAsUpEnabled(boolean show) {
-        mBackIndicator.setVisibility(show? View.VISIBLE : View.GONE);
-    }
+	/**
+	 * Shows the provided logo to the left in the action bar.
+	 * 
+	 * This is ment to be used instead of the setHomeAction and does not draw a
+	 * divider to the left of the provided logo.
+	 * 
+	 * @param resId
+	 *            The drawable resource id
+	 */
+	public void setHomeLogo(int resId) {
+		// TODO: Add possibility to add an IntentAction as well.
+		mLogoView.setImageResource(resId);
+		mLogoView.setVisibility(View.VISIBLE);
+		mHomeLayout.setVisibility(View.GONE);
+	}
 
+	/*
+	 * Emulating Honeycomb, setdisplayHomeAsUpEnabled takes a boolean and
+	 * toggles whether the "home" view should have a little triangle indicating
+	 * "up"
+	 */
+	public void setDisplayHomeAsUpEnabled(boolean show) {
+		mBackIndicator.setVisibility(show ? View.VISIBLE : View.GONE);
+	}
 
-    public void setTitle(CharSequence title) {
-        mTitleView.setText(title);
-    }
+	public void setTitle(CharSequence title) {
+		mTitleView.setText(title);
+		mTitleView.setVisibility(View.VISIBLE);
+	}
 
-    public void setTitle(int resid) {
-        mTitleView.setText(resid);
-    }
+	public void setTitle(int resid) {
+		mTitleView.setText(resid);
+		mTitleView.setVisibility(View.VISIBLE);
+		mTitleLogo.setVisibility(View.GONE);
+	}
 
-    /**
-     * Set the enabled state of the progress bar.
-     * 
-     * @param One of {@link View#VISIBLE}, {@link View#INVISIBLE},
-     *   or {@link View#GONE}.
-     */
-    public void setProgressBarVisibility(int visibility) {
-        mProgress.setVisibility(visibility);
-    }
+	/**
+	 * Shows the provided logo in the action bar.
+	 * 
+	 * @param resId
+	 *            The drawable resource id
+	 */
+	public void setTitleLogo(int resId) {
+		mTitleLogo.setImageResource(resId);
+		mTitleLogo.setVisibility(View.VISIBLE);
+		mTitleView.setVisibility(View.GONE);
+	}
 
-    /**
-     * Returns the visibility status for the progress bar.
-     * 
-     * @param One of {@link View#VISIBLE}, {@link View#INVISIBLE},
-     *   or {@link View#GONE}.
-     */
-    public int getProgressBarVisibility() {
-        return mProgress.getVisibility();
-    }
+	/**
+	 * Set the enabled state of the progress bar.
+	 * 
+	 * @param One
+	 *            of {@link View#VISIBLE}, {@link View#INVISIBLE}, or
+	 *            {@link View#GONE}.
+	 */
+	public void setProgressBarVisibility(int visibility) {
+		mProgress.setVisibility(visibility);
+	}
 
-    /**
-     * Function to set a click listener for Title TextView
-     * 
-     * @param listener the onClickListener
-     */
-    public void setOnTitleClickListener(OnClickListener listener) {
-        mTitleView.setOnClickListener(listener);
-    }
+	/**
+	 * Returns the visibility status for the progress bar.
+	 * 
+	 * @param One
+	 *            of {@link View#VISIBLE}, {@link View#INVISIBLE}, or
+	 *            {@link View#GONE}.
+	 */
+	public int getProgressBarVisibility() {
+		return mProgress.getVisibility();
+	}
 
-    @Override
-    public void onClick(View view) {
-        final Object tag = view.getTag();
-        if (tag instanceof Action) {
-            final Action action = (Action) tag;
-            action.performAction(view);
-        }
-    }
+	/**
+	 * Function to set a click listener for Title TextView
+	 * 
+	 * @param listener
+	 *            the onClickListener
+	 */
+	public void setOnTitleClickListener(OnClickListener listener) {
+		mTitleView.setOnClickListener(listener);
+	}
 
-    /**
-     * Adds a list of {@link Action}s.
-     * @param actionList the actions to add
-     */
-    public void addActions(ActionList actionList) {
-        int actions = actionList.size();
-        for (int i = 0; i < actions; i++) {
-            addAction(actionList.get(i));
-        }
-    }
+	@Override
+	public void onClick(View view) {
+		final Object tag = view.getTag();
+		if (tag instanceof Action) {
+			final Action action = (Action) tag;
+			action.performAction(view);
+		}
+	}
 
-    /**
-     * Adds a new {@link Action}.
-     * @param action the action to add
-     */
-    public void addAction(Action action) {
-        final int index = mActionsView.getChildCount();
-        addAction(action, index);
-    }
+	/**
+	 * Adds a list of {@link Action}s.
+	 * 
+	 * @param actionList
+	 *            the actions to add
+	 */
+	public void addActions(ActionList actionList) {
+		int actions = actionList.size();
+		for (int i = 0; i < actions; i++) {
+			addAction(actionList.get(i));
+		}
+	}
 
-    /**
-     * Adds a new {@link Action} at the specified index.
-     * @param action the action to add
-     * @param index the position at which to add the action
-     */
-    public void addAction(Action action, int index) {
-        mActionsView.addView(inflateAction(action), index);
-    }
+	/**
+	 * Adds a new {@link Action}.
+	 * 
+	 * @param action
+	 *            the action to add
+	 */
+	public void addAction(Action action) {
+		final int index = mActionsView.getChildCount();
+		addAction(action, index);
+	}
 
-    /**
-     * Removes all action views from this action bar
-     */
-    public void removeAllActions() {
-        mActionsView.removeAllViews();
-    }
+	/**
+	 * Adds a new {@link Action} at the specified index.
+	 * 
+	 * @param action
+	 *            the action to add
+	 * @param index
+	 *            the position at which to add the action
+	 */
+	public void addAction(Action action, int index) {
+		mActionsView.addView(inflateAction(action), index);
+	}
 
-    /**
-     * Remove a action from the action bar.
-     * @param index position of action to remove
-     */
-    public void removeActionAt(int index) {
-        mActionsView.removeViewAt(index);
-    }
+	/**
+	 * Removes all action views from this action bar
+	 */
+	public void removeAllActions() {
+		mActionsView.removeAllViews();
+	}
 
-    /**
-     * Remove a action from the action bar.
-     * @param action The action to remove
-     */
-    public void removeAction(Action action) {
-        int childCount = mActionsView.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View view = mActionsView.getChildAt(i);
-            if (view != null) {
-                final Object tag = view.getTag();
-                if (tag instanceof Action && tag.equals(action)) {
-                    mActionsView.removeView(view);
-                }
-            }
-        }
-    }
+	/**
+	 * Remove a action from the action bar.
+	 * 
+	 * @param index
+	 *            position of action to remove
+	 */
+	public void removeActionAt(int index) {
+		mActionsView.removeViewAt(index);
+	}
 
-    /**
-     * Returns the number of actions currently registered with the action bar.
-     * @return action count
-     */
-    public int getActionCount() {
-        return mActionsView.getChildCount();
-    }
+	/**
+	 * Remove a action from the action bar.
+	 * 
+	 * @param action
+	 *            The action to remove
+	 */
+	public void removeAction(Action action) {
+		int childCount = mActionsView.getChildCount();
+		for (int i = 0; i < childCount; i++) {
+			View view = mActionsView.getChildAt(i);
+			if (view != null) {
+				final Object tag = view.getTag();
+				if (tag instanceof Action && tag.equals(action)) {
+					mActionsView.removeView(view);
+				}
+			}
+		}
+	}
 
-    /**
-     * Inflates a {@link View} with the given {@link Action}.
-     * @param action the action to inflate
-     * @return a view
-     */
-    private View inflateAction(Action action) {
-        View view = mInflater.inflate(R.layout.actionbar_item, mActionsView, false);
+	/**
+	 * Returns the number of actions currently registered with the action bar.
+	 * 
+	 * @return action count
+	 */
+	public int getActionCount() {
+		return mActionsView.getChildCount();
+	}
 
-        ImageButton labelView =
-            (ImageButton) view.findViewById(R.id.actionbar_item);
-        labelView.setImageResource(action.getDrawable());
+	/**
+	 * Inflates a {@link View} with the given {@link Action}.
+	 * 
+	 * @param action
+	 *            the action to inflate
+	 * @return a view
+	 */
+	private View inflateAction(Action action) {
+		View view = mInflater.inflate(R.layout.actionbar_item, mActionsView,
+				false);
 
-        view.setTag(action);
-        view.setOnClickListener(this);
-        return view;
-    }
+		ImageButton labelView = (ImageButton) view
+				.findViewById(R.id.actionbar_item);
+		labelView.setImageResource(action.getDrawable());
 
-    /**
-     * A {@link LinkedList} that holds a list of {@link Action}s.
-     */
-    public static class ActionList extends LinkedList<Action> {
-    }
+		view.setTag(action);
+		view.setOnClickListener(this);
+		return view;
+	}
 
-    /**
-     * Definition of an action that could be performed, along with a icon to
-     * show.
-     */
-    public interface Action {
-        public int getDrawable();
-        public void performAction(View view);
-    }
+	/**
+	 * A {@link LinkedList} that holds a list of {@link Action}s.
+	 */
+	public static class ActionList extends LinkedList<Action> {
+	}
 
-    public static abstract class AbstractAction implements Action {
-        final private int mDrawable;
+	/**
+	 * Definition of an action that could be performed, along with a icon to
+	 * show.
+	 */
+	public interface Action {
+		public int getDrawable();
 
-        public AbstractAction(int drawable) {
-            mDrawable = drawable;
-        }
+		public void performAction(View view);
+	}
 
-        @Override
-        public int getDrawable() {
-            return mDrawable;
-        }
-    }
+	public static abstract class AbstractAction implements Action {
+		final private int mDrawable;
 
-    public static class IntentAction extends AbstractAction {
-        private Context mContext;
-        private Intent mIntent;
+		public AbstractAction(int drawable) {
+			mDrawable = drawable;
+		}
 
-        public IntentAction(Context context, Intent intent, int drawable) {
-            super(drawable);
-            mContext = context;
-            mIntent = intent;
-        }
+		@Override
+		public int getDrawable() {
+			return mDrawable;
+		}
+	}
 
-        @Override
-        public void performAction(View view) {
-            try {
-               mContext.startActivity(mIntent); 
-            } catch (ActivityNotFoundException e) {
-                Toast.makeText(mContext,
-                        mContext.getText(R.string.actionbar_activity_not_found),
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+	public static class IntentAction extends AbstractAction {
+		private Context mContext;
+		private Intent mIntent;
 
-    /*
-    public static abstract class SearchAction extends AbstractAction {
-        public SearchAction() {
-            super(R.drawable.actionbar_search);
-        }
-    }
-    */
+		public IntentAction(Context context, Intent intent, int drawable) {
+			super(drawable);
+			mContext = context;
+			mIntent = intent;
+		}
+
+		@Override
+		public void performAction(View view) {
+			try {
+				mContext.startActivity(mIntent);
+			} catch (ActivityNotFoundException e) {
+				Toast.makeText(
+						mContext,
+						mContext.getText(R.string.actionbar_activity_not_found),
+						Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+
+	/*
+	 * public static abstract class SearchAction extends AbstractAction { public
+	 * SearchAction() { super(R.drawable.actionbar_search); } }
+	 */
 }
